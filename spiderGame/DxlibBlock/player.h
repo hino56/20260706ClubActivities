@@ -1,9 +1,31 @@
 #pragma once
-
-//ƒvƒŒƒCƒ„[‚ÌÀ•W‚ğŠÇ—‚·‚é” (ƒNƒ‰ƒX)
-class player
+class Player
 {
-	//float‚ğg—p¨­”‚ªg‚¦‚é¨“®‚«‚ªŠŠ‚ç‚©‚É
-	float x, y;			//player‚ÌÀ•W
+public:
+	//floatã‚’ä½¿ç”¨â†’å°‘æ•°ãŒä½¿ãˆã‚‹â†’å‹•ããŒæ»‘ã‚‰ã‹ã«
+	float x, y;			//playerã®åº§æ¨™
+
+	float vx, vy;       //playerã®é€Ÿåº¦
+
+	bool isGround;
+
+	bool isGameOver;
+
+	bool isClear;
 };
 
+//playerã‚’è¤‡æ•°ã®cppã§ä½¿ç”¨ã§ãã‚‹ã‚ˆã†ã«ã™ã‚‹
+extern Player player;
+
+//å®šæ•°
+const float JUMP_POWER = -3.0f;
+
+const float GAME_OVER_Y = 650.0f;
+
+const float CLEAR_X = 3200.0f;
+
+//é–¢æ•°
+void InputPlayer();
+void UpdatePlayer();
+void DrawPlayer();
+void DrawGround();

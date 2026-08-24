@@ -1,38 +1,65 @@
 #include"DxLib.h"
+#include "player.h"
+#include "hook.h"
+#include"camera.h"
 using namespace std;
 
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 {
-	//ƒQ[ƒ€‰æ–Ê‚ÌÝ’è(TRUE:ƒEƒBƒ“ƒhƒEƒ‚[ƒh)(FALSE:ƒtƒ‹ƒXƒNƒŠ[ƒ“ƒ‚[ƒh)
+
+	//ã‚²ãƒ¼ãƒ ç”»é¢ã®è¨­å®š(TRUE:ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ¢ãƒ¼ãƒ‰)(FALSE:ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ãƒ¢ãƒ¼ãƒ‰)
 	ChangeWindowMode(TRUE);
-	//DxLib‚Ì‰Šú‰»
-	DxLib_Init();
-	//ƒQ[ƒ€ƒEƒBƒ“ƒhƒE‚Ìƒ^ƒCƒgƒ‹Ý’è
-	SetWindowText("SpiderGame");
-	//‰æ–Ê‚ÌƒTƒCƒY‚ÆF”‚ÌÝ’è(‰æ–Ê‚Ì‰¡•A‰æ–Ê‚Ì‚‚³AF‚Ì[‚³)
+
+
+	//ç”»é¢ã®ã‚µã‚¤ã‚ºã¨è‰²æ•°ã®è¨­å®š(ç”»é¢ã®æ¨ªå¹…ã€ç”»é¢ã®é«˜ã•ã€è‰²ã®æ·±ã•)
 	SetGraphMode(680, 560, 32);
-	//‰Šú‰»Ž¸”sŽž‚ÌI—¹Ý’è
+
+
+	//ã‚²ãƒ¼ãƒ ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚¿ã‚¤ãƒˆãƒ«è¨­å®š
+	SetWindowText("SpiderGame");
+
+
+	//åˆæœŸåŒ–å¤±æ•—æ™‚ã®çµ‚äº†è¨­å®š
 	if (DxLib_Init() == -1)
 	{
-		return -1;    //‚Ps‚È‚Ì‚Å{}È—ª‰Â”\
+		return -1;
 	}
-	
-	//— ‰æ–Ê‚Ö‚Ì‚Ý•\Ž¦
+
+
+	//playerã®åº§æ¨™
+	InputPlayer();
+
+	//hookã®åº§æ¨™
+	InputHook();
+
+	//è£ç”»é¢ã¸ã®ã¿è¡¨ç¤º
 	SetDrawScreen(DX_SCREEN_BACK);
 
-	//ƒQ[ƒ€‚ð“®‚©‚µ‘±‚¯‚éƒ‹[ƒv
-	while (ProcessMessage() == 0)   //ˆÓ–¡:ƒEƒBƒ“ƒhƒE‚ª¶‚«‚Ä‚¢‚éŒÀ‚è“®‚©‚µ‘±‚¯‚é(0¨³í(‘±‚¯‚é)b-1¨I—¹)
-	//“®ì:ƒEƒBƒ“ƒhƒE‚ÌXVAƒL[ƒ{[ƒh‚Ì“ü—Íˆ—AOS‚©‚ç‚ÌI—¹—v‹ƒ`ƒFƒbƒN
+
+	//ã‚²ãƒ¼ãƒ ã‚’å‹•ã‹ã—ç¶šã‘ã‚‹ãƒ«ãƒ¼ãƒ—
+	while (ProcessMessage() == 0)
 	{
-		ClearDrawScreen();    //‰æ–Ê‚ð^‚Á”’(ƒŠƒZƒbƒg)‚É‚·‚é
-		//‘‚©‚È‚¢‚Æ:‘OƒtƒŒ[ƒ€‚Ì•`‰æ‰æŽc‚èAŠG‚ªd‚È‚é‚½‚ß‰æ–Ê‚ª‚®‚¿‚á‚®‚¿‚á‚É‚È‚é
 
+		ClearDrawScreen();    //ç”»é¢ã‚’çœŸã£ç™½(ãƒªã‚»ãƒƒãƒˆ)ã«ã™ã‚‹
 
-		ScreenFlip();   //— ‰æ–Ê‚ÌŠ®¬•i‚ð•\‚É•`‰æ‚·‚é
-		//wSetDrawScreen(DX_SCREEN_BACK)x‚Å— ‰æ–Ê‚É•\Ž¦A•`‰æì‹Æ‚ªŠ®¬‚µ‚½‚çwScreenFlipx‚Å•\‰æ–Ê‚É•\Ž¦
+		//æ›´æ–°
+		UpdatePlayer();
+		UpdateCamera();
+
+		//åœ°é¢ã®æç”»
+		DrawGround();
+
+		//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æç”»
+		DrawPlayer();
+
+		//hookã®æç”»
+		DrawHook();
+
+		ScreenFlip();   //è£ç”»é¢ã®å®Œæˆå“ã‚’è¡¨ã«æç”»ã™ã‚‹
+
 	}
 
-	DxLib_End();    //ƒQ[ƒ€I—¹Žž‚ÉDxLib‚ðI—¹‚³‚¹‚é
-	return 0;     //ƒvƒƒOƒ‰ƒ€‚ª³í‚ÉI—¹‚µ‚½‡}
+	DxLib_End();    //ã‚²ãƒ¼ãƒ çµ‚äº†æ™‚ã«DxLibã‚’çµ‚äº†ã•ã›ã‚‹
+	return 0;     //ãƒ—ãƒ­ã‚°ãƒ©ãƒ ãŒæ­£å¸¸ã«çµ‚äº†ã—ãŸåˆå›³
 }
