@@ -1,17 +1,20 @@
+#include "DxLib.h"
 #include "player.h"
 #include "stage.h"
 #include "hook.h"
 #include"camera.h"
-#include "DxLib.h"
 
 //型　 変数
 Player player;
 
 //初期化
-void InputPlayer()
+void InitPlayer()
 {
 	player.x = 50.0f;
 	player.y = 150.0f;
+
+	/*player.positionTest.x = 50.0f;
+	player.positionTest.y = 50.0f;*/
 
 	player.vx = 0.0f;
 	player.vy = 0.0f;
@@ -65,7 +68,7 @@ void UpdatePlayer()
 	player.y += player.vy;
 
 	//地面の当たり判定
-	if (player.x >= 0 && player.x <= 100)
+	if (player.x >= -100 && player.x <= 100)
 	{
 		if (player.y + 10 >= Stage::GROUND_Y)
 		{
@@ -87,11 +90,14 @@ void UpdatePlayer()
 		return;
 	}
 
-	//一定の高さ落ちたらゲームオーバー
-	if (player.y >= GAME_OVER_Y)
+	if (!hook.isActive)
 	{
-		player.isGameOver = true;
-		return;
+		//一定の高さ落ちたらゲームオーバー
+		if (player.y >= GAME_OVER_Y)
+		{
+			player.isGameOver = true;
+			return;
+		}
 	}
 
 	//hookの判定

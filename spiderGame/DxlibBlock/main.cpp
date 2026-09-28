@@ -28,10 +28,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 
 
 	//playerの座標
-	InputPlayer();
+	InitPlayer();
 
 	//hookの座標
-	InputHook();
+	InitHook();
 
 	//裏画面へのみ表示
 	SetDrawScreen(DX_SCREEN_BACK);

@@ -11,10 +11,10 @@ const float RELEASE_UP_POWER = 2.0f;
 Hook hook;
 
 //配列
-HookPoint hookPoints[HOOK_POINT_COUNT] = { {500.0f,200.0f},{1000.0f,100.0f},{1500.0f,250.0f},{2000.0f,150.0f},{2500.0f,200.0f},{3000.0f,250.0f} };
+HookPoint hookPoints[HOOK_POINT_COUNT] = { {500.0f,200.0f},{1500.0f,100.0f},{2500.0f,250.0f},{3500.0f,150.0f},{4500.0f,200.0f},{5500.0f,250.0f} };
 
 //hookの初期化
-void InputHook()
+void InitHook()
 {
 	//座標の初期化
 	hook.x = 0.0f;
@@ -79,7 +79,7 @@ void UpdateHook()
 		float distance = sqrtf(dx * dx + dy * dy);
 
 		// ロープの長さを超えた場合
-		if (distance > hook.ropeLength)
+		if (distance > 0.0f)
 		{
 			//hookPointから見たプレイヤーの方向計算
 			float dirX = dx / distance;
@@ -92,13 +92,9 @@ void UpdateHook()
 			//プレイヤーの速度がロープを伸ばす方向にどれほどかかっているか
 			float velocityDot = player.vx * dirX + player.vy * dirY;
 
-			//ロープの長さを超える速度が0以上の場合
-			if (velocityDot > 0)
-			{
-				//ロープの長さを超える速度を消す
-				player.vx -= velocityDot * dirX;
-				player.vy -= velocityDot * dirY;
-			}
+			//ロープの方向への速度を消す
+			player.vx -= velocityDot * dirX;
+			player.vy -= velocityDot * dirY;
 		}
 	}
 	//hookを離したとき(Qキーを離す)に接続状態を「false」にする　
@@ -107,8 +103,11 @@ void UpdateHook()
 		//hookが接続されている場合
 		if (hook.isActive)
 		{
-			//上方向へ加速
-			player.vy -= RELEASE_UP_POWER;
+			if (hook.y < player.y)
+			{
+				//上方向へ加速
+				player.vy -= RELEASE_UP_POWER;
+			}
 		}
 
 		//hook.isActiveをfalseに変更

@@ -28,6 +28,6 @@ extern Hook hook;
 extern HookPoint hookPoints[HOOK_POINT_COUNT];
 
 //関数
-void InputHook();
+void InitHook();
 void UpdateHook();
 void DrawHook();
