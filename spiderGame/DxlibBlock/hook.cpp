@@ -11,7 +11,7 @@ const float RELEASE_UP_POWER = 2.0f;
 Hook hook;
 
 //配列
-HookPoint hookPoints[HOOK_POINT_COUNT] = { {500.0f,200.0f},{1500.0f,100.0f},{2500.0f,250.0f},{3500.0f,150.0f},{4500.0f,200.0f},{5500.0f,250.0f} };
+HookPoint hookPoints[HOOK_POINT_COUNT] = { { 500.0f,200.0f },{ 1500.0f,100.0f },{ 2500.0f,250.0f },{ 3500.0f,150.0f },{ 4500.0f,200.0f },{ 5500.0f,250.0f } };
 
 //hookの初期化
 void InitHook()
@@ -121,14 +121,15 @@ void DrawHook()
 	for (int i = 0;i < HOOK_POINT_COUNT;i++)
 	{
 		//hookPointの描画
-		DrawCircle((int)(hookPoints[i].x - cameraX), (int)hookPoints[i].y, 5, GetColor(255, 0, 0), TRUE);
+		DrawCircle((int)(hookPoints[i].x - cameraX), (int)(hookPoints[i].y - cameraY), 5, GetColor(255, 0, 0), TRUE);
 	}
 
 	//hookが接続されているとき
 	if (hook.isActive)
 	{
 		//hookPointからプレイヤーまでのロープを描画
-		DrawLine((int)(player.x - cameraX), (int)player.y, (int)(hook.x - cameraX), (int)hook.y, GetColor(255, 255, 255));
+		DrawLine((int)(player.x - cameraX), (int)(player.y - cameraY), (int)(hook.x - cameraX), (int)(hook.y - cameraY), GetColor(255, 255, 255));
+
 	}
 
 }
